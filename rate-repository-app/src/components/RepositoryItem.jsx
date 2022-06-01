@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   bottomBox: {
+    marginBottom: 10,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
