@@ -9,7 +9,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   avatar: { margin: 5, width: 50, height: 50, borderRadius: 5 },
-  userInfo: { margin: 10, display: 'flex', flexDirection: 'column' },
+  userInfo: {
+    margin: 10,
+    display: 'flex',
+    flexShrink: 1,
+    flexDirection: 'column',
+  },
   languageBox: {
     backgroundColor: theme.colors.blueButton,
     borderRadius: 5,
@@ -52,7 +57,9 @@ const RepositoryItem = ({ repoItem }) => {
           <Text fontSize="subheading" fontWeight="bold">
             {repoItem.fullName}
           </Text>
-          <Text color="textSecondary"> {repoItem.description}</Text>
+          <Text color="textSecondary" style={{ flexShrink: 1 }}>
+            {repoItem.description}
+          </Text>
           <View style={styles.languageBox}>
             <Text color="textButton">{repoItem.language}</Text>
           </View>

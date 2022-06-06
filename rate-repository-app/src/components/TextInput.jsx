@@ -22,10 +22,13 @@ const styles = StyleSheet.create({
 
 const TextInput = ({ style, error, ...props }) => {
   const textInputStyle = [style];
-
   return (
     <NativeTextInput
-      style={error === undefined ? styles.inputBox : styles.errorInputBox}
+      style={
+        error === false || error === undefined
+          ? styles.inputBox
+          : styles.errorInputBox
+      }
       {...props}
     />
   );
