@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import RepositoryItem from './RepositoryItem';
-import Text from './Text';
 import theme from '../theme';
+import useRepositories from '../hooks/useRepositories';
 
 const styles = StyleSheet.create({
   separator: {
@@ -19,22 +18,9 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const Footer = () => <View style={styles.footer} />;
 
 const RepositoryList = () => {
-  const [repositories, setRepositories] = useState();
-
-  const fetchRepositories = async () => {
-    const response = await fetch('http://192.168.0.23:5000/api/repositories');
-    const json = await response.json();
-
-    console.log(json);
-
-    setRepositories(json);
-  };
-
-  useEffect(() => {
-    fetchRepositories();
-  }, []);
-
+  const { repositories } = useRepositories();
   // Get the nodes from the edges array
+
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
@@ -44,11 +30,10 @@ const RepositoryList = () => {
       <FlatList
         data={repositoryNodes}
         ItemSeparatorComponent={ItemSeparator}
-        keyExtractor={(repo) => repo.id}
+        keyExtractor={(repo) => repo.fullName}
         renderItem={({ item }) => <RepositoryItem repoItem={item} />}
         ListFooterComponent={Footer}
       />
-      <Text>This is the end of the page</Text>
     </View>
   );
 };
