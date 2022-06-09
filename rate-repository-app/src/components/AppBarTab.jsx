@@ -1,12 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { Link } from 'react-router-native';
 import Text from './Text';
+import theme from '../theme';
 
 const styles = StyleSheet.create({
-  tab: {
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-  },
+  tab: theme.tab,
 });
 
 const AppBarTab = ({ tabName, navTo }) => (

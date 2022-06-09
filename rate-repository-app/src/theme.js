@@ -27,6 +27,10 @@ const theme = {
     normal: '400',
     bold: '700',
   },
+  tab: {
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+  },
 };
 
 export default theme;
