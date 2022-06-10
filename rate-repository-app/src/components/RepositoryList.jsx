@@ -17,10 +17,7 @@ const styles = StyleSheet.create({
 const ItemSeparator = () => <View style={styles.separator} />;
 const Footer = () => <View style={styles.footer} />;
 
-const RepositoryList = () => {
-  const { repositories } = useRepositories();
-  // Get the nodes from the edges array
-
+export const RepositoryListContainer = ({ repositories }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
@@ -36,6 +33,12 @@ const RepositoryList = () => {
       />
     </View>
   );
+};
+
+const RepositoryList = () => {
+  const { repositories } = useRepositories();
+
+  return <RepositoryListContainer repositories={repositories} />;
 };
 
 export default RepositoryList;

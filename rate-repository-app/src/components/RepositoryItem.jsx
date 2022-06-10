@@ -45,7 +45,7 @@ const StatItem = ({ number, text }) => {
 
 const RepositoryItem = ({ repoItem }) => {
   return (
-    <View>
+    <View testID="repositoryItem">
       <View style={styles.topBox}>
         <Image
           style={styles.avatar}
