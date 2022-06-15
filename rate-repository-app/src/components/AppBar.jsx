@@ -29,7 +29,12 @@ const SignInOut = ({ loading, data }) => {
   } else if (!data || data.me == null) {
     return <AppBarTab tabName="Sign in" navTo="/signIn" />;
   } else {
-    return <SignOutTab />;
+    return (
+      <>
+        <AppBarTab tabName="Create a review" navTo="/createreview" />
+        <SignOutTab />
+      </>
+    );
   }
 };
 
@@ -39,7 +44,7 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal style={styles.scrollview}>
         <AppBarTab tabName="Repositories" navTo="/" />
-        <AppBarTab tabName="Create a review" navTo="/createreview" />
+
         <SignInOut loading={loading} data={data} />
       </ScrollView>
     </View>
