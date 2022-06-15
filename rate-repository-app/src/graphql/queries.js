@@ -3,8 +3,11 @@ import { REPO_FIELDS, SINGLE_REPO_FIELDS } from './fragments';
 
 export const GET_REPOSITORIES = gql`
   ${REPO_FIELDS}
-  query {
-    repositories {
+  query Repositories(
+    $orderBy: AllRepositoriesOrderBy
+    $orderDirection: OrderDirection
+  ) {
+    repositories(orderBy: $orderBy, orderDirection: $orderDirection) {
       ...RepoFields
     }
   }
