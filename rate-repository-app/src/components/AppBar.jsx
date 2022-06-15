@@ -27,7 +27,12 @@ const SignInOut = ({ loading, data }) => {
   if (loading) {
     return null;
   } else if (!data || data.me == null) {
-    return <AppBarTab tabName="Sign in" navTo="/signIn" />;
+    return (
+      <>
+        <AppBarTab tabName="Sign in" navTo="/signIn" />
+        <AppBarTab tabName="Sign up" navTo="/signUp" />
+      </>
+    );
   } else {
     return (
       <>
@@ -44,7 +49,6 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal style={styles.scrollview}>
         <AppBarTab tabName="Repositories" navTo="/" />
-
         <SignInOut loading={loading} data={data} />
       </ScrollView>
     </View>
