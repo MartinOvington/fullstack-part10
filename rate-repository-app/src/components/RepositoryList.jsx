@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { FlatList, View, StyleSheet, Pressable } from 'react-native';
+import { Searchbar } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import RepositoryItem from './RepositoryItem';
 import theme from '../theme';
 import useRepositories from '../hooks/useRepositories';
 import { useNavigate } from 'react-router';
+import { useDebounce } from 'use-debounce';
 
 const styles = StyleSheet.create({
   separator: {
@@ -15,16 +17,29 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: theme.colors.background,
   },
-  selector: {
+  header: {
     backgroundColor: theme.colors.background,
+  },
+  searchBar: {
+    margin: 10,
   },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
 const Footer = () => <View style={styles.footer} />;
-const OrderSelector = ({ orderBy, setOrderBy }) => {
+const Header = ({ orderBy, setOrderBy, searchQuery, setSearchQuery }) => {
+  const onChangeSearch = (query) => {
+    setSearchQuery(query);
+  };
+
   return (
-    <View style={styles.selector}>
+    <View style={styles.header}>
+      <Searchbar
+        style={styles.searchBar}
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+      />
       <Picker
         selectedValue={orderBy}
         onValueChange={(value) => {
@@ -43,6 +58,8 @@ export const RepositoryListContainer = ({
   repositories,
   orderBy,
   setOrderBy,
+  searchQuery,
+  setSearchQuery,
 }) => {
   const navigate = useNavigate();
 
@@ -62,7 +79,12 @@ export const RepositoryListContainer = ({
           </Pressable>
         )}
         ListHeaderComponent={
-          <OrderSelector orderBy={orderBy} setOrderBy={setOrderBy} />
+          <Header
+            orderBy={orderBy}
+            setOrderBy={setOrderBy}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
         }
         ListFooterComponent={Footer}
       />
@@ -72,13 +94,17 @@ export const RepositoryListContainer = ({
 
 const RepositoryList = () => {
   const [orderBy, setOrderBy] = useState('latest');
-  const { repositories } = useRepositories(orderBy);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedQuery] = useDebounce(searchQuery, 500);
+  const { repositories } = useRepositories(orderBy, debouncedQuery);
 
   return (
     <RepositoryListContainer
       repositories={repositories}
       orderBy={orderBy}
       setOrderBy={setOrderBy}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
     />
   );
 };
