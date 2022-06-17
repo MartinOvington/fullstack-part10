@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
-import RepositoryItem from './RepositoryItem';
+import Repository from './Repository';
 import theme from '../theme';
 import useRepositories from '../hooks/useRepositories';
 import { useNavigate } from 'react-router';
@@ -76,7 +76,7 @@ export const RepositoryListContainer = ({
         keyExtractor={(repo) => repo.fullName}
         renderItem={({ item }) => (
           <Pressable onPress={() => navigate(`/repository/${item.id}`)}>
-            <RepositoryItem repoItem={item} />
+            <Repository repoItem={item} />
           </Pressable>
         )}
         ListHeaderComponent={

@@ -51,7 +51,7 @@ const StatItem = ({ number, text }) => {
   );
 };
 
-const RepositoryItem = ({ repoItem, urlButton }) => {
+const Repository = ({ repoItem, urlButton }) => {
   return (
     <View testID="repositoryItem">
       <View style={styles.topBox}>
@@ -93,4 +93,4 @@ const RepositoryItem = ({ repoItem, urlButton }) => {
   );
 };
 
-export default RepositoryItem;
+export default Repository;

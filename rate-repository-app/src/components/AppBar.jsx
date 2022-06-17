@@ -37,6 +37,7 @@ const SignInOut = ({ loading, data }) => {
     return (
       <>
         <AppBarTab tabName="Create a review" navTo="/createreview" />
+        <AppBarTab tabName="My reviews" navTo="/myreviews" />
         <SignOutTab />
       </>
     );
