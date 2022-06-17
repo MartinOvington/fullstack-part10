@@ -60,6 +60,7 @@ export const RepositoryListContainer = ({
   setOrderBy,
   searchQuery,
   setSearchQuery,
+  onEndReach,
 }) => {
   const navigate = useNavigate();
 
@@ -87,6 +88,8 @@ export const RepositoryListContainer = ({
           />
         }
         ListFooterComponent={Footer}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     </View>
   );
@@ -96,7 +99,15 @@ const RepositoryList = () => {
   const [orderBy, setOrderBy] = useState('latest');
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery] = useDebounce(searchQuery, 500);
-  const { repositories } = useRepositories(orderBy, debouncedQuery);
+  const { repositories, fetchMore } = useRepositories(
+    orderBy,
+    debouncedQuery,
+    8
+  );
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
@@ -105,6 +116,7 @@ const RepositoryList = () => {
       setOrderBy={setOrderBy}
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
+      onEndReach={onEndReach}
     />
   );
 };

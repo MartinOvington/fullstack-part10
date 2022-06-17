@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useParams } from 'react-router-native';
@@ -59,31 +58,35 @@ const ReviewItem = ({ review }) => {
 
 const SingleRepository = () => {
   const params = useParams();
-  const [repository, setRepository] = useState(null);
-  const { data, error, loading } = useQuery(GET_REPOSITORY, {
-    variables: { repositoryId: params.id },
+  const { data, loading, fetchMore } = useQuery(GET_REPOSITORY, {
+    variables: { repositoryId: params.id, first: 8 },
     fetchPolicy: 'cache-and-network',
     // Other options
   });
 
-  useEffect(() => {
-    if (!loading && !error) {
-      setRepository(data.repository);
+  const onEndReach = () => {
+    const canFetchMore =
+      !loading && data?.repository.reviews.pageInfo.hasNextPage;
+    if (!canFetchMore) {
+      return;
     }
-  }, [loading, data]);
+    fetchMore({
+      variables: {
+        after: data.repository.reviews.pageInfo.endCursor,
+        repositoryId: params.id,
+        first: 8,
+      },
+    });
+  };
 
-  const reviewNodes = repository
-    ? repository.reviews.edges.map((edge) => edge.node)
+  if (loading || !data) {
+    return <Text>Loading...</Text>;
+  }
+
+  const reviewNodes = data.repository
+    ? data.repository.reviews.edges.map((edge) => edge.node)
     : [];
 
-  if (loading) {
-    return <Text>Loading</Text>;
-  } else if (error) {
-    console.log(error);
-    return null;
-  } else if (!repository) {
-    return null;
-  }
   return (
     <FlatList
       data={reviewNodes}
@@ -91,12 +94,14 @@ const SingleRepository = () => {
       keyExtractor={({ id }) => id}
       ListHeaderComponent={() => (
         <View>
-          <RepositoryItem repoItem={repository} urlButton />
+          <RepositoryItem repoItem={data.repository} urlButton />
           <ItemSeparator />
         </View>
       )}
       ItemSeparatorComponent={ItemSeparator}
       ListFooterComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

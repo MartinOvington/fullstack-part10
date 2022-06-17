@@ -15,6 +15,10 @@ export const REPO_FIELDS = gql`
         ratingAverage
       }
     }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
   }
 `;
 
@@ -30,7 +34,7 @@ export const SINGLE_REPO_FIELDS = gql`
     stargazersCount
     forksCount
     url
-    reviews {
+    reviews(first: $first, after: $after) {
       edges {
         node {
           id
@@ -42,6 +46,10 @@ export const SINGLE_REPO_FIELDS = gql`
             username
           }
         }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
       }
     }
   }
